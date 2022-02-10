@@ -23,7 +23,7 @@ public class Scene {
     OrthographicCamera camera;
 
     //Vlt sogar einen eigenen shader pro Scene um jeder scene eienen unique feeling zu geben
-    ShaderProgram shader;
+    ShaderProgram shader; // noch nicht implementiert
 
     public Scene(String tilemap, OrthographicCamera camera) {
         this(tilemap, camera, null);
@@ -73,6 +73,11 @@ public class Scene {
 
     public void setTileMapRenderer(TiledMapRenderer tileMapRenderer) {
         this.tileMapRenderer = tileMapRenderer;
+    }
+
+    public void dispose() {
+        map.dispose();
+        shader.dispose();
     }
 
 }
