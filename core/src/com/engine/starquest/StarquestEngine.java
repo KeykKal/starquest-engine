@@ -22,6 +22,7 @@ public class StarquestEngine extends ApplicationAdapter {
         cam = new OrthographicCamera();
         cam.setToOrtho(false,w,h);
         testScene = new Scene("unbenannt.tmx", cam);
+        testScene.setBackgroundMusic("Main_theme_trailer.mp3");
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package com.engine.scenes;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -20,7 +23,9 @@ public class Scene {
 
     TiledMap map;
     TiledMapRenderer tileMapRenderer;
-    OrthographicCamera camera;
+    OrthographicCamera camera; 
+
+    Music backgroundMusic;
 
     //Vlt sogar einen eigenen shader pro Scene um jeder scene eienen unique feeling zu geben
     ShaderProgram shader; // noch nicht implementiert
@@ -75,9 +80,22 @@ public class Scene {
         this.tileMapRenderer = tileMapRenderer;
     }
 
+    public Music getBackgroundMusic() {
+        return backgroundMusic;
+    }
+
+    public void setBackgroundMusic(String m) {
+        this.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(m));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.play();
+    }
+
     public void dispose() {
         map.dispose();
-        shader.dispose();
+        if(shader != null)
+            shader.dispose();
+        if(backgroundMusic != null)
+            backgroundMusic.dispose();
     }
 
 }
