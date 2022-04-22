@@ -1,33 +1,23 @@
 package com.engine.scenes;
 
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.engine.starquest.StarquestEngine;
+import com.engine.audio.Music;
 
+//muss abstract in der zukunft sein damit wir mehrere scenen haben und es einfacher ist sie zu erstellen
+public abstract class Scene {
 
-public class Scene {
-    
     /**
      * Problems:
-     *  -shaders funktiunieren nicht wenn man die update methode zwichen batch.begin und batch.end setzt
+     * -shaders funktiunieren nicht wenn man die update methode zwichen batch.begin
+     * und batch.end setzt
     */
+    Level level;
+    Music bgMusic;
 
+    OrthographicCamera camera;
 
-    TiledMap map;
-    TiledMapRenderer tileMapRenderer;
-    OrthographicCamera camera; 
-
-    Music backgroundMusic;
-
-    //Vlt sogar einen eigenen shader pro Scene um jeder scene eienen unique feeling zu geben
+    //unsicher ob wir ein shader pro scene überhaupt haben wollen
     ShaderProgram shader; // noch nicht implementiert
 
     public Scene(String tilemap, OrthographicCamera camera) {
@@ -36,24 +26,19 @@ public class Scene {
 
     public Scene(String tilemap, OrthographicCamera camera, ShaderProgram shader) {
         this.camera = camera;
-        map = new TmxMapLoader().load(tilemap);
-        tileMapRenderer = new OrthogonalTiledMapRenderer(map);
-
-        tileMapRenderer.setView(camera);
+        level = new Level(tilemap, camera);
+        bgMusic = new Music();
 
         setShader(shader);
 
         init();
     }
 
-
     public void init() {}
 
-    public void update() {
-        tileMapRenderer.setView(camera);
-        tileMapRenderer.render();
+    public void render() {
+        level.render();
     }
-
 
     public void setShader(ShaderProgram shader) {
         this.shader = shader;
@@ -63,39 +48,16 @@ public class Scene {
         return this.shader;
     }
 
-    
-    public TiledMap getMap() {
-        return map;
-    }
-
-    public void setMap(TiledMap map) {
-        this.map = map;
-    }
-
-    public TiledMapRenderer getTileMapRenderer() {
-        return tileMapRenderer;
-    }
-
-    public void setTileMapRenderer(TiledMapRenderer tileMapRenderer) {
-        this.tileMapRenderer = tileMapRenderer;
-    }
-
-    public Music getBackgroundMusic() {
-        return backgroundMusic;
-    }
-
-    public void setBackgroundMusic(String m) {
-        this.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(m));
-        backgroundMusic.setLooping(true);
-        backgroundMusic.play();
+    protected void startBGMusic(String musicFile) {
+        bgMusic.play(musicFile, true);
     }
 
     public void dispose() {
-        map.dispose();
-        if(shader != null)
+        if (level != null)
+            level.dispose();
+        if (shader != null)
             shader.dispose();
-        if(backgroundMusic != null)
-            backgroundMusic.dispose();
+        if (bgMusic != null)
+            bgMusic.end();
     }
-
 }
