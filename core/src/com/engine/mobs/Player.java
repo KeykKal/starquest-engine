@@ -3,9 +3,7 @@ package com.engine.mobs;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.engine.Utils.Assets;
 import com.engine.graphics.Animation;
 import com.engine.graphics.SplicedImage;
@@ -22,23 +20,26 @@ public class Player extends Entity {
     SplicedImage playerSplice;
     int richtung = 1;
     float speed = 100;
+    OrthographicCamera cam;
 
-    public Player() {
+    public Player(OrthographicCamera cam) {
         playerSplice = new SplicedImage(Assets.Sprites.TEMP_PLAYER_RUN, 1, 8);
         playerAnim = new Animation(0.075f, playerSplice, true);
         position = new Vector2();
+
+        this.cam = cam;
     }
 
-    public void update(OrthographicCamera cam) {
-        move(cam);
+    public void update() {
+        move();
     }
 
     public void render() {
-        playerAnim.playAnimation(position.x, position.y);
+        playerAnim.playAnimation(position.x, position.y, cam);
     }
 
-    public void move(OrthographicCamera cam) {
-        position.set(cam.position.x, cam.position.y);
+    public void move() {
+        // position.set(cam.position.x, cam.position.y);
         Vector2 dir = new Vector2();
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
             dir.x--;
@@ -65,8 +66,10 @@ public class Player extends Entity {
 
         dir.x*=speed * Gdx.graphics.getDeltaTime();
         dir.y*=speed * Gdx.graphics.getDeltaTime();
-        position.add(dir);  
-        cam.position.add(new Vector3(dir, 0));
+        position.add(dir);
+        cam.position.set(position, 0);
+        // cam.position.add(new Vector3(dir, 0));
+        // System.out.println();
     }
     
     public Vector2 getPosition() {

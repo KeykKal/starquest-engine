@@ -64,7 +64,7 @@ public class Music {
 
     public synchronized void volume(float volume) {
         if(player != null) 
-            player.setVolume(this.volume = volume); //Klapt das??
+            player.setVolume(this.volume = volume); //Klapt das?? (ja das tut es)
     }
 
     public synchronized void setLoop(boolean looping) { 

@@ -1,6 +1,7 @@
 package com.engine.graphics;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,6 +29,16 @@ public class Animation {
 
     public Animation(float frameDur, String texture, int rows, int columns, boolean loop) {
         this(frameDur, new SplicedImage(texture, rows, columns), loop);
+    }
+
+    public void playAnimation(float x, float y, OrthographicCamera cam) {
+        batch.setProjectionMatrix(cam.combined);
+        batch.begin();
+
+        currentFrameTime += Gdx.graphics.getDeltaTime();
+        batch.draw(animation.getKeyFrame(currentFrameTime, looping), x, y);
+
+        batch.end();
     }
 
     public void playAnimation(float x, float y) {

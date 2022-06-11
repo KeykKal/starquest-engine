@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.engine.audio.Music;
 
 //muss abstract in der zukunft sein damit wir mehrere scenen haben und es einfacher ist sie zu erstellen
+//oder ein interface, ich glaub interface wäre sogar besser 
 public abstract class Scene {
 
     /**
@@ -20,24 +21,29 @@ public abstract class Scene {
     //unsicher ob wir ein shader pro scene überhaupt haben wollen
     ShaderProgram shader; // noch nicht implementiert
 
+    public Scene(OrthographicCamera cam) {
+        this(null, cam);
+    }
+
     public Scene(String tilemap, OrthographicCamera camera) {
         this(tilemap, camera, null);
     }
 
     public Scene(String tilemap, OrthographicCamera camera, ShaderProgram shader) {
         this.camera = camera;
-        level = new Level(tilemap, camera);
+        if(tilemap != null)
+            level = new Level(tilemap, camera);
         bgMusic = new Music();
 
         setShader(shader);
-
-        init();
     }
 
     public void init() {}
 
     public void render() {
-        level.render();
+        if(level != null) {
+            level.render();
+        }
     }
 
     public void setShader(ShaderProgram shader) {
