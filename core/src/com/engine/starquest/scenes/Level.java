@@ -1,4 +1,4 @@
-package com.engine.scenes;
+package com.engine.starquest.scenes;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -6,6 +6,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
+//ist seit dem aufräumen etwas unnötig geworden kann aber noch praktisch sein
+//fürs erste ist es aber 
+@Deprecated
 public class Level {
     
     TiledMap map;

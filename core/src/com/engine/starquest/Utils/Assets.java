@@ -1,5 +1,7 @@
-package com.engine.Utils;
+package com.engine.starquest.Utils;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets {
     
@@ -21,6 +23,12 @@ public class Assets {
     public static class Sprites {
         public static final String TEMP_PLAYER_IDLE = "images/noBKG_KnightIdle_strip.png";
         public static final String TEMP_PLAYER_RUN = "images/noBKG_KnightRun_strip.png";
+        public static final String TEMP_OTHER_PLAYER_SHEET = "images/Warrior_SheetnoEffect.png";
+    }
+
+    public static class UI {
+        public static final String UI_SKIN_PATH = "data/uiskin.json";
+        public static final Skin UI_SKIN = new Skin(Gdx.files.internal(UI_SKIN_PATH));
     }
 
 }

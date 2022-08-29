@@ -1,42 +1,50 @@
 package com.engine.starquest;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.engine.Utils.Assets;
-import com.engine.graphics.Animation;
-import com.engine.graphics.SplicedImage;
-import com.engine.mobs.Player;
-import com.engine.scenes.Scene;
-import com.engine.scenes.TestScene;
-import com.engine.scenes.TestScene2;
+import com.badlogic.gdx.Game;
+import com.engine.starquest.scenes.MainGameScene;
+import com.engine.starquest.scenes.Scene;
 
-public class StarquestEngine extends ApplicationAdapter {
-    // ich habe keine ahnung wie ich collisionen implementieren soll also lass ich's fürs erste
+public class StarquestEngine extends Game {
+    
+    MainGameScene mainGame;
+    
+
+    public static enum sceneType {
+        MainGame
+    }
+
+    public Scene getSceneType(sceneType sceneType) {
+        switch(sceneType) {
+            //MainGame
+            default: return mainGame; 
+        }
+    }
+
+    @Override
+    public void create() {
+        mainGame = new MainGameScene(this);
+        setScreen(mainGame);
+    }
+
+    @Override
+    public void dispose() {
+        mainGame.dispose();
+    }
+}
+
+/* 
+    // ich habe keine ahnung wie ich collisionen implementieren soll also lass ich's
+    // fürs erste
     // wichtig für das physik system incls. collisionen
     World world;
 
     OrthographicCamera cam;
+    FitViewport viewport;
     Scene testScene;
-    Texture t; // Texture um triggers zu testen
+
+    InventoryUI inv;
+    Stage stage;
 
     SpriteBatch sb;
     Player player;
@@ -51,9 +59,14 @@ public class StarquestEngine extends ApplicationAdapter {
         cam = new OrthographicCamera();
         cam.setToOrtho(false, w, h);
         cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
+
+        viewport = new FitViewport(16, 9);
+
         testScene = new TestScene(cam);
-        t = new Texture(Gdx.files.internal("images/badlogic.jpg"));
         sb = new SpriteBatch();
+        inv = new InventoryUI();
+        stage = new Stage(viewport);
+        stage.addActor(inv);
 
         player = new Player(cam);
     }
@@ -70,17 +83,6 @@ public class StarquestEngine extends ApplicationAdapter {
         ScreenUtils.clear(0, 0, 0, 1);
 
         // camera controlls
-        // if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-        // cam.translate(-1, 0);
-        // } else if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-        // cam.translate(1, 0);
-        // }
-
-        // if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-        // cam.translate(0, 1);
-        // } else if(Gdx.input.isKeyPressed(Input.Keys.S)){
-        // cam.translate(0, -1);
-        // }
 
         // updates
         player.update();
@@ -94,12 +96,18 @@ public class StarquestEngine extends ApplicationAdapter {
         testScene.render();
 
         sb.setProjectionMatrix(cam.combined);
-        sb.begin();
-        sb.draw(t, -300, -300);
-        sb.end();
-
+        
         // render die animation | platz halter für den spieler an position x:200, y:250
         player.render();
+
+        sb.begin();
+        inv.draw(sb, 1f);
+        sb.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
     }
 
     @Override
@@ -107,5 +115,6 @@ public class StarquestEngine extends ApplicationAdapter {
         testScene.dispose();
         player.dispose();
         sb.dispose();
+        Assets.UI.UI_SKIN.dispose();
     }
-}
+*/

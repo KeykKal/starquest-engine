@@ -7,6 +7,9 @@ import com.engine.starquest.StarquestEngine;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = 800;
+		config.height = 450;
+		config.title = "StarQuest Engine";
 		new LwjglApplication(new StarquestEngine(), config);
 	}
 }
