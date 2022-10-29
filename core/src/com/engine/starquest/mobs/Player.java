@@ -20,7 +20,7 @@ public class Player extends Entity {
 
 
     public Player(String name) {
-        super(name);
+        super(name, 100);
         // load animations
         Array<GridPoint2> points = new Array<>();
         vel = new Vector2();
@@ -113,7 +113,6 @@ public class Player extends Entity {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             if(grounded) {
                 // dir.add(0, 1);
-                System.out.println();
                 vel.add(0, 25);
                 jump = true;
                 animS = "JUMP";
@@ -143,6 +142,8 @@ public class Player extends Entity {
         calculateVelocity(delta, animS);
         // draw
         drawCharacter(batch);
+
+        if(curHealth <= 0) { curHealth = maxHealth; position = new Vector2(0, 0); collision.move(position.x, position.y); }
     }
 
     //das klappt nicht so gut versuch ist etwas her

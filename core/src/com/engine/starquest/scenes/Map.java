@@ -11,7 +11,7 @@ public class Map {
     public static float scale = 1f+1/16f;
 
     public Map() {
-        currentMap = new TmxMapLoader().load(Assets.TileMaps.TEST_TILE_MAP); //bin hier stehen geblieben
+        currentMap = new TmxMapLoader().load(Assets.TileMaps.TEST_TILE_MAP);
     }
 
     public TiledMap getCurrentMap() {

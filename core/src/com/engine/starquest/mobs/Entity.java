@@ -1,6 +1,5 @@
 package com.engine.starquest.mobs;
 
-import java.time.temporal.IsoFields;
 import java.util.Hashtable;
 
 import com.badlogic.gdx.Gdx;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.engine.starquest.physics.CollisionRect;
 
 //Der name des packages "mob" ist nur temporär. Bei besseren ideen einfach ändern
 
@@ -18,17 +18,25 @@ import com.badlogic.gdx.utils.Array;
 public abstract class Entity {
     protected String name;
     protected Vector2 position;
+    protected int maxHealth;
+    public int curHealth;
+    protected int frameW = 69, frameH = 44;
+    public CollisionRect collision;
 
-    public Entity(String name) {
+    public Entity(String name, int health) {
         this.name = name;
         position = new Vector2(); //400, 225
         animations = new Hashtable<>();
+
+        collision = new CollisionRect(position.x, position.y, frameW, frameH);
+
+        maxHealth = health;
+        curHealth = maxHealth;
     }
 
     //Animations system
 
     //fixed kann man in der zukunft ändern
-    protected int frameW = 69, frameH = 44;
     
     
     //        String = animation state name | Animation = die animation selbst
@@ -85,6 +93,7 @@ public abstract class Entity {
 
     protected void move(float x, float y, float delta) {
         position.add(x*delta, y*delta);
+        collision.move(position.x, position.y);
     }
 
     protected void changeAnimation(String animationState) {
@@ -104,7 +113,8 @@ public abstract class Entity {
 
     protected TextureRegion getCurrentFrame() { return currentFrame; }
     public Vector2 getPosition() { return position; }
-    
+    public int getCurrentHealth() { return curHealth; }
+
     protected void drawCharacter(SpriteBatch batch) {
         batch.begin();
         batch.draw(getCurrentFrame(), flip ? position.x + frameW : position.x, position.y, flip ? -frameW : frameW, frameH);
